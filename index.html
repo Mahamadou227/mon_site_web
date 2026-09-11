@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>trainings4IT – Formations Cybersécurité & Réseaux</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" type="image/jpeg" href="logo.jpeg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0f172a;
+    --accent: #06b6d4;
+    --accent2: #8b5cf6;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --success: #10b981;
+    --danger: #ef4444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+
+  nav {
+    background: var(--primary);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 64px; position: sticky; top: 0; z-index: 100;
+  }
+  .nav-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: color .2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a.active { color: #fff; font-weight: 700; border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+  .btn { padding: 8px 20px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; border: none; transition: all .2s; }
+  .btn-ghost { background: transparent; color: #94a3b8; border: 1px solid #334155; }
+  .btn-ghost:hover { background: #1e293b; color: #fff; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #0891b2; }
+  .btn-lg { padding: 14px 32px; font-size: 1rem; border-radius: 10px; }
+  .btn-outline { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+  .btn-outline:hover { background: var(--accent); color: #fff; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .hero { background: var(--primary); padding: 80px 2rem 100px; text-align: center; position: relative; overflow: hidden; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(6,182,212,0.15); color: var(--accent); border: 1px solid rgba(6,182,212,0.3); padding: 6px 16px; border-radius: 99px; font-size: 0.8rem; font-weight: 600; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; color: #fff; line-height: 1.15; max-width: 800px; margin: 0 auto 20px; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: #94a3b8; font-size: 1.1rem; max-width: 560px; margin: 0 auto 40px; line-height: 1.7; }
+  .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .hero-stats { display: flex; gap: 48px; justify-content: center; margin-top: 64px; flex-wrap: wrap; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: #fff; }
+  .hero-stat .lab { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
+
+  section { padding: 80px 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 0.75rem; font-weight: 700; color: var(--accent); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 12px; }
+  .section-sub { color: var(--muted); font-size: 1rem; max-width: 520px; line-height: 1.7; }
+  .section-header { margin-bottom: 48px; }
+
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .feature-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; transition: transform .2s, box-shadow .2s; }
+  .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+  .feature-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(6,182,212,0.1); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+  .feature-card h3 { font-weight: 600; font-size: 1rem; margin-bottom: 8px; }
+  .feature-card p { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
+
+  .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+  .course-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: transform .2s, box-shadow .2s; cursor: pointer; }
+  .course-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+  .course-thumb { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; }
+  .course-level { position: absolute; top: 12px; right: 12px; padding: 4px 12px; border-radius: 99px; font-size: 0.7rem; font-weight: 700; letter-spacing: .05em; }
+  .level-debutant { background: rgba(16,185,129,0.15); color: #059669; }
+  .level-intermediaire { background: rgba(245,158,11,0.15); color: #d97706; }
+  .level-avance { background: rgba(239,68,68,0.15); color: #dc2626; }
+  .course-body { padding: 20px; }
+  .course-body h3 { font-weight: 600; font-size: 1rem; margin-bottom: 8px; line-height: 1.4; }
+  .course-body p { color: var(--muted); font-size: 0.8rem; line-height: 1.5; margin-bottom: 16px; }
+  .course-meta { display: flex; gap: 16px; font-size: 0.75rem; color: var(--muted); margin-bottom: 16px; }
+  .course-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); }
+  .course-price { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; }
+  .course-price.free { color: var(--success); }
+  .enroll-btn { padding: 8px 20px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; background: var(--primary); color: #fff; transition: background .2s; }
+  .enroll-btn:hover { background: var(--accent); }
+
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+  .filter-btn { padding: 8px 18px; border-radius: 99px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--muted); transition: all .2s; }
+  .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .filter-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+
+  .testimonials { background: var(--primary); }
+  .testimonials .section-title { color: #fff; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .testimonial-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; }
+  .stars { color: #fbbf24; margin-bottom: 12px; font-size: 0.9rem; }
+  .testimonial-card p { color: #94a3b8; font-size: 0.875rem; line-height: 1.7; margin-bottom: 16px; }
+  .testimonial-author { display: flex; align-items: center; gap: 12px; }
+  .author-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; }
+  .testimonial-author h4 { font-size: 0.875rem; font-weight: 600; color: #fff; }
+  .testimonial-author span { font-size: 0.75rem; color: #64748b; }
+
+  .cta-section { text-align: center; background: var(--primary); padding: 80px 2rem; }
+  .cta-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; color: #fff; margin-bottom: 16px; }
+  .cta-section p { color: #94a3b8; font-size: 1rem; margin-bottom: 32px; }
+
+  footer { background: #020617; color: #64748b; padding: 48px 2rem 24px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; max-width: 1100px; margin: 0 auto 40px; }
+  .footer-brand p { font-size: 0.875rem; line-height: 1.7; margin-top: 12px; color: #475569; }
+  .footer-col h4 { font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 16px; }
+  .footer-col a { display: block; font-size: 0.875rem; color: #475569; text-decoration: none; margin-bottom: 10px; cursor: pointer; transition: color .2s; }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-bottom { border-top: 1px solid #1e293b; padding-top: 24px; text-align: center; font-size: 0.8rem; max-width: 1100px; margin: 0 auto; }
+
+
+  /* Hamburger */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: all .3s; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--primary); z-index: 99; padding: 16px 0; border-top: 1px solid #1e293b; }
+  .mobile-menu.open { display: block; }
+  .mobile-menu a { display: block; padding: 14px 24px; color: #94a3b8; font-size: 0.95rem; font-weight: 500; cursor: pointer; border-bottom: 1px solid #1e293b; transition: color .2s; }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover, .mobile-menu a.active { color: #fff; background: rgba(6,182,212,0.08); }
+
+  @media(max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    .hero { padding: 48px 1rem 60px; }
+    .hero h1 { font-size: 1.7rem; }
+    .hero-stats { gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .hero-stat { min-width: 80px; }
+    .features-grid { grid-template-columns: 1fr !important; }
+    .courses-grid { grid-template-columns: 1fr !important; }
+    .testimonials-grid { grid-template-columns: 1fr !important; }
+    section { padding: 40px 1rem !important; }
+    .container { padding: 0 !important; }
+    .section-title { font-size: 1.4rem; }
+    /* Services section — 1 colonne sur mobile */
+    div[style*="grid-template-columns:repeat(auto-fit,minmax(280px"] { grid-template-columns: 1fr !important; }
+    div[style*="grid-template-columns:repeat(2,1fr)"] { grid-template-columns: 1fr !important; }
+    div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+    /* Contact cards */
+    div[style*="grid-template-columns:1fr 1fr;gap:16px"] { grid-template-columns: 1fr !important; }
+    /* Catalogue detail */
+    div[style*="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))"] { grid-template-columns: 1fr 1fr !important; }
+  }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')"><div style="display:flex;flex-direction:column;line-height:1;"><div style="font-size:1.3rem;font-weight:900;letter-spacing:-0.5px;"><span style="color:#06b6d4;">TRAININGS</span><span style="color:#fff;">4IT</span></div><div style="font-size:0.45rem;color:#94a3b8;letter-spacing:0.15em;font-weight:600;">LEARNING NEVER ENDS</div></div></div>
+  <div class="nav-links">
+    <a id="nav-accueil" onclick="showPage('home')" class="active">Accueil</a>
+    <a id="nav-formations" onclick="showPage('catalogue')">Formations</a>
+    <a id="nav-pourquoi" onclick="showPage('pourquoi')">Pourquoi nous</a>
+    <a id="nav-contact" onclick="showPage('contact')">Contactez-nous</a>
+  </div>
+  <div class="nav-actions" id="nav-actions"></div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Menu mobile -->
+<div class="mobile-menu" id="mobile-menu">
+  <a id="mob-accueil" onclick="showPage('home');closeMenu()" class="active">Accueil</a>
+  <a id="mob-formations" onclick="showPage('catalogue');closeMenu()">Formations</a>
+  <a id="mob-pourquoi" onclick="showPage('pourquoi');closeMenu()">Pourquoi nous</a>
+  <a id="mob-contact" onclick="showPage('contact');closeMenu()">Contactez-nous</a>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-badge">🚀 Plateforme de référence en Cybersécurité</div>
+    <h1>Maîtrisez l'<span>Administration</span> & la Sécurité Système et Réseaux</h1>
+    <p>Formez-vous aux métiers de demain avec des experts certifiés. Cours pratiques, certifications reconnues, à votre rythme.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-lg" onclick="showPage('catalogue')">Voir les formations</button>
+      
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num" id="stat-apprenants">0</div><div class="lab">Apprenants actifs</div></div>
+      <div class="hero-stat"><div class="num" id="stat-formations">0</div><div class="lab">Formations disponibles</div></div>
+      <div class="hero-stat"><div class="num" id="stat-satisfaction">0%</div><div class="lab">Taux de satisfaction</div></div>
+      
+    </div>
+  </div>
+
+  <section style="background:var(--primary);padding:72px 2rem;">
+    <div class="container">
+      <div class="section-header" style="text-align:center;">
+        <div class="section-label">Ce que nous faisons</div>
+        <div class="section-title" style="color:#fff;">Nos Services</div>
+        <div class="section-sub" style="color:#94a3b8;max-width:600px;margin:0 auto;">
+          De la formation à l'intégration, nous accompagnons les entreprises et les professionnels IT à chaque étape de leur montée en compétences.
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:0 auto;">
+
+        <!-- Formations -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;transition:transform .2s;display:flex;flex-direction:column;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="width:56px;height:56px;border-radius:14px;background:rgba(6,182,212,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.6rem;color:var(--accent);"><i class="fas fa-graduation-cap"></i></div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;color:#fff;font-size:1.05rem;margin-bottom:10px;">Formations IT certifiantes</h3>
+          <p style="color:#94a3b8;font-size:0.85rem;line-height:1.8;flex:1;">Parcours pratiques en virtualisation, sécurité réseau et supervision, animés par des experts certifiés actifs sur le terrain.</p>
+          <button onclick="showPage('catalogue')" class="btn btn-primary" style="margin-top:24px;align-self:flex-start;">Voir les formations</button>
+        </div>
+
+        <!-- Développement web -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;transition:transform .2s;display:flex;flex-direction:column;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="width:56px;height:56px;border-radius:14px;background:rgba(139,92,246,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.6rem;color:var(--accent2);"><i class="fas fa-globe"></i></div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;color:#fff;font-size:1.05rem;margin-bottom:10px;">Création de sites web</h3>
+          <p style="color:#94a3b8;font-size:0.85rem;line-height:1.8;flex:1;">Conception et déploiement de sites web professionnels, sécurisés dès la conception avec HTTPS et bonnes pratiques de sécurité.</p>
+          <button onclick="showPage('contact')" class="btn" style="margin-top:24px;align-self:flex-start;background:var(--accent2);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;">Nous contacter</button>
+        </div>
+
+        <!-- Développement applicatif -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;transition:transform .2s;display:flex;flex-direction:column;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="width:56px;height:56px;border-radius:14px;background:rgba(99,102,241,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.6rem;color:#818cf8;"><i class="fas fa-code"></i></div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;color:#fff;font-size:1.05rem;margin-bottom:10px;">Développement d'applications</h3>
+          <p style="color:#94a3b8;font-size:0.85rem;line-height:1.8;flex:1;">Conception d'applications web sur mesure : outils métier, interfaces d'administration et systèmes de gestion, sécurisés dès la conception.</p>
+          <button onclick="showPage('contact')" class="btn" style="margin-top:24px;align-self:flex-start;background:#6366f1;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;">Nous contacter</button>
+        </div>
+
+        <!-- Infographie -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;transition:transform .2s;display:flex;flex-direction:column;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="width:56px;height:56px;border-radius:14px;background:rgba(251,146,60,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.6rem;color:#fb923c;"><i class="fas fa-paint-brush"></i></div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;color:#fff;font-size:1.05rem;margin-bottom:10px;">Design & Infographie</h3>
+          <p style="color:#94a3b8;font-size:0.85rem;line-height:1.8;flex:1;">Conception de logos, affiches, flyers et supports visuels professionnels pour votre marque, vos événements et vos communications.</p>
+          <button onclick="showPage('contact')" class="btn" style="margin-top:24px;align-self:flex-start;background:#fb923c;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;">Nous contacter</button>
+        </div>
+
+        <!-- Consulting Sécurité -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;transition:transform .2s;display:flex;flex-direction:column;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="width:56px;height:56px;border-radius:14px;background:rgba(239,68,68,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.6rem;color:#f87171;"><i class="fas fa-shield-alt"></i></div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;color:#fff;font-size:1.05rem;margin-bottom:10px;">Consulting Sécurité & Réseaux</h3>
+          <p style="color:#94a3b8;font-size:0.85rem;line-height:1.8;flex:1;">Audit et sécurisation de vos infrastructures : déploiement FortiGate, segmentation VLAN, VPN, SD-WAN et déploiement de réseaux LAN complets pour les entreprises.</p>
+          <button onclick="showPage('contact')" class="btn" style="margin-top:24px;align-self:flex-start;background:#f87171;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;">Nous contacter</button>
+        </div>
+
+        <!-- Infogérance -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;transition:transform .2s;display:flex;flex-direction:column;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="width:56px;height:56px;border-radius:14px;background:rgba(16,185,129,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.6rem;color:#34d399;"><i class="fas fa-server"></i></div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;color:#fff;font-size:1.05rem;margin-bottom:10px;">Administration Systèmes & Infogérance</h3>
+          <p style="color:#94a3b8;font-size:0.85rem;line-height:1.8;flex:1;">Gestion de vos serveurs Windows Server, Linux, Active Directory, solutions VoIP, virtualisation Proxmox, monitoring Zabbix/Grafana et maintien en condition opérationnelle de votre SI.</p>
+          <button onclick="showPage('contact')" class="btn" style="margin-top:24px;align-self:flex-start;background:#34d399;color:#0f172a;border:none;padding:10px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;">Nous contacter</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Nos avantages</div>
+        <div class="section-title">Pourquoi choisir TRAININGS4IT ?</div>
+        <div class="section-sub">Une plateforme pensée pour les professionnels IT qui veulent progresser efficacement.</div>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-user-graduate" style="color:#06b6d4;"></i></div><h3>Formateurs certifiés</h3><p>Nos formateurs sont des experts certifiés Fortinet NSE 4, NSE 5, Proxmox VE et Zabbix, actifs dans le domaine.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-flask" style="color:#06b6d4;"></i></div><h3>Labs pratiques</h3><p>Chaque formation inclut des exercices en environnement réel. Apprenez en faisant, pas en lisant.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-certificate" style="color:#06b6d4;"></i></div><h3>Certificats reconnus</h3><p>Obtenez des certificats de réussite valorisés par les recruteurs et les entreprises du secteur.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-clock" style="color:#06b6d4;"></i></div><h3>À votre rythme</h3><p>Accès illimité 24h/7j à tous vos cours depuis n'importe quel appareil.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-users" style="color:#06b6d4;"></i></div><h3>Communauté active</h3><p>Forum d'apprenants, questions aux formateurs, collaboration sur des projets réels.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-sync-alt" style="color:#06b6d4;"></i></div><h3>Mises à jour régulières</h3><p>Le contenu est mis à jour en permanence pour rester aligné avec les dernières menaces.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#f1f5f9;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Formations populaires</div>
+        <div class="section-title">Commencez votre apprentissage</div>
+        <div class="section-sub">Découvrez nos formations les plus suivies par notre communauté.</div>
+      </div>
+      <div class="courses-grid" id="featured-courses"></div>
+      <div style="text-align:center; margin-top:40px;">
+        <button class="btn btn-outline btn-lg" onclick="showPage('catalogue')">Voir toutes les formations →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Témoignages</div>
+        <div class="section-title">Ce que disent nos apprenants</div>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>Le formateur est tout simplement le meilleur que j'aie jamais eu. Les concepts les plus complexes deviennent accessibles, et tout s'enchaîne naturellement. Sans la moindre hésitation, je compte poursuivre avec la formation NSE5. C'est le meilleur endroit pour apprendre les solutions Fortinet.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background:rgba(6,182,212,0.2); color:var(--accent);">KA</div>
+            <div><h4>Kouassi Alexandre</h4><span>Apprenant NSE 4 – <img src="https://flagcdn.com/16x12/ci.png" style="vertical-align:middle;margin-right:4px;"> Côte d'Ivoire</span></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>Il y a des rencontres qui changent une carrière. M. Mahamadou anime ses formations avec une véritable maîtrise du sujet, beaucoup de pédagogie et une grande générosité. Je me suis inscrit à trois formations : Fortinet, Zabbix-Grafana et Proxmox. À chaque fois, la même qualité de contenu et le même souci de transmettre des compétences concrètes.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background:rgba(139,92,246,0.2); color:var(--accent2);">DG</div>
+            <div><h4>Delhy Isnarel Gambou</h4><span>Apprenant NSE4, Zabbix & Proxmox – <img src="https://flagcdn.com/16x12/fr.png" style="vertical-align:middle;margin-right:4px;"> France</span></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>J'ai suivi la formation FortiGate et c'est l'une des meilleures expériences de ma carrière. Le formateur se distingue par sa disponibilité exceptionnelle — accessible à tout moment, pédagogue et toujours au-delà du contenu initial. Des supports vidéo sont partagés après chaque session pour faciliter la révision. Une académie de très haut niveau que je recommande vivement à tous ceux qui souhaitent développer de solides compétences en FortiGate.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background:rgba(16,185,129,0.2); color:var(--success);">KD</div>
+            <div><h4>Koulabiou Diallo Mamadou</h4><span>Apprenant FortiGate – <img src="https://flagcdn.com/16x12/gn.png" style="vertical-align:middle;margin-right:4px;"> Conakry, Guinée</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-section">
+    <h2>Prêt à booster votre carrière IT ?</h2>
+    <p>Rejoignez plus de 30 professionnels déjà formés sur trainings4IT.</p>
+    
+  </div>
+
+</div>
+
+<!-- CATALOGUE -->
+<div id="page-catalogue" class="page">
+  <div id="detail-content" style="display:none;"></div>
+  <div id="catalogue-content"><section>
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Catalogue complet</div>
+        <div class="section-title">Toutes nos formations</div>
+        <div class="section-sub">3 formations actives + 4 formations à venir en Administration Système, Sécurité Réseau et Supervision.</div>
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" onclick="filterCourses('tous', this)">Tous</button>
+        <button class="filter-btn" onclick="filterCourses('securite', this)">Sécurité Réseau</button>
+        <button class="filter-btn" onclick="filterCourses('systeme', this)">Virtualisation</button>
+        <button class="filter-btn" onclick="filterCourses('supervision', this)">Supervision</button>
+        <button class="filter-btn" onclick="filterCourses('reseaux', this)">Réseaux</button>
+        <button class="filter-btn" onclick="filterCourses('soc', this)">SOC / SIEM</button>
+      </div>
+      <div class="courses-grid" id="all-courses"></div>
+    </div>
+  </section></div>
+</div>
+
+
+
+
+
+
+
+<script>
+const COURSES = [
+  { id:1, emoji:`<img src="logo-proxmox.png" style="max-height:60px;max-width:160px;object-fit:contain;">`, title:'Proxmox VE – Virtualisation', desc:'Installez et configurez Proxmox VE, créez et gérez un cluster, déployez des VMs et conteneurs LXC, mettez en œuvre la Haute Disponibilité et sécurisez votre environnement.', level:'debutant', cat:'systeme', duration:'6h/semaine', modules:5, price:'110 000 FCFA', free:false, upcoming:false },
+  { id:2, emoji:`<img src="logo-fortinet.png" style="max-height:60px;max-width:160px;object-fit:contain;">`, title:'FortiOS Administrator 7.6.0 – NSE 4', desc:'Formation 100% pratique en sécurité réseau, firewall et protection des infrastructures. 16 modules couvrant IPsec VPN, SD-WAN, FortiSASE et plus encore.', level:'intermediaire', cat:'securite', duration:'6h/semaine', modules:16, price:'125 000 FCFA', free:false, upcoming:false },
+  { id:3, emoji:`<div style="display:flex;align-items:center;justify-content:center;gap:12px;"><img src="logo-zabbix.png" style="height:40px;object-fit:contain;"><img src="logo-grafana.png" style="height:40px;object-fit:contain;"></div>`, title:'Supervision avec Zabbix & Grafana', desc:'Déployez une plateforme complète de supervision sous Ubuntu, surveillez vos serveurs via SNMP, automatisez les alertes et créez des tableaux de bord Grafana professionnels.', level:'intermediaire', cat:'supervision', duration:'6h/semaine', modules:6, price:'110 000 FCFA', free:false, upcoming:false },
+  { id:4, emoji:`<img src="logo-fortinet.png" style="max-height:60px;max-width:160px;object-fit:contain;">`, title:'FCP Fortinet Certified Professional – NSE 5', desc:'Montez en compétences sur FortiManager et FortiAnalyzer. Gérez des infrastructures multi-sites Fortinet à grande échelle et préparez la certification NSE 5.', level:'avance', cat:'securite', duration:'6h/semaine', modules:10, price:'À venir', free:false, upcoming:true },
+  { id:5, emoji:`<img src='logo-wazuh.jpg' style='max-height:120px;max-width:280px;object-fit:contain;mix-blend-mode:multiply;'>`, title:'SIEM avec Wazuh', desc:'Déployez et configurez une solution SIEM open source avec Wazuh. Collecte de logs, détection des menaces, alertes et tableaux de bord de sécurité.', level:'intermediaire', cat:'soc', duration:'6h/semaine', modules:8, price:'À venir', free:false, upcoming:true },
+  { id:6, emoji:`<img src='logo-mikrotik.png' style='max-height:90px;max-width:180px;object-fit:contain;mix-blend-mode:multiply;'>`, title:'MTCNA – MikroTik Certified Network Associate', desc:'Maîtrisez RouterOS MikroTik : routage, switching, VPN, QoS, firewall et administration réseau. Préparation à la certification officielle MTCNA.', level:'debutant', cat:'reseaux', duration:'6h/semaine', modules:8, price:'À venir', free:false, upcoming:true },
+  { id:7, emoji:`<img src='logo-windows-server.png' style='max-height:120px;max-width:280px;object-fit:contain;'>`, title:'Windows Server Administration', desc:'Administrez un environnement Windows Server : Active Directory, DNS, DHCP, GPO, gestion des utilisateurs et des droits, sécurité et sauvegarde.', level:'intermediaire', cat:'systeme', duration:'6h/semaine', modules:10, price:'À venir', free:false, upcoming:true },
+];
+
+
+const DETAILS = {
+  1: {
+    logo: '<img src="logo-proxmox.png" style="height:60px;object-fit:contain;">',
+    title: 'Proxmox VE – Virtualisation',
+    subtitle: 'Formation Professionnelle – Niveau Débutant à Avancé',
+    desc: 'Développez des compétences recherchées en administration système et virtualisation.',
+    date: 'Mercredi 24 Juin 2026',
+    duree: '6h / semaine',
+    mode: 'En ligne',
+    modules: [
+      'Installer & configurer Proxmox VE',
+      'Créer et gérer un cluster Proxmox',
+      'Déployer des machines virtuelles (VMs) et conteneurs LXC',
+      'Mettre en œuvre la Haute Disponibilité (HA)',
+      "Sécuriser l'environnement (Pare-feu, Active Directory)",
+      "Et bien d'autres..."
+    ]
+  },
+  2: {
+    logo: '<img src="logo-fortinet.png" style="height:60px;object-fit:contain;">',
+    title: 'FortiOS Administrator 7.6.0 – NSE 4',
+    subtitle: '9ème Promotion – Formation 100% pratique',
+    desc: 'Formation 100% pratique en sécurité réseau, firewall et protection des infrastructures.',
+    date: '18 Avril 2026',
+    duree: '6h / semaine',
+    mode: 'En ligne',
+    modules: [
+      '1- System et Network Settings',
+      '2- Logging et Monitoring',
+      '3- Firewall Policies et NAT',
+      '4- Routing',
+      '5- Fortinet Authentication',
+      '6- FortiGate Single Sign-On (FSSO)',
+      '7- Certificate Operations',
+      '8- Antivirus Filtering',
+      '9- Web Filtering',
+      '10- Intrusion Prevention and Application Control',
+      '11- IPsec VPN',
+      '12- SD-WAN Configuration',
+      '13- High Availability and Monitoring',
+      '14- Diagnostics and Troubleshooting',
+      '15- FortiGate in the Cloud',
+      '16- FortiSASE'
+    ]
+  },
+  3: {
+    logo: '<img src="logo-zabbix.png" style="height:45px;object-fit:contain;"> <img src="logo-grafana.png" style="height:45px;object-fit:contain;">',
+    title: 'Supervision avec Zabbix & Grafana',
+    subtitle: 'Formation complète de monitoring',
+    desc: 'Déployez une solution de monitoring complète, opérationnelle et prête pour la production.',
+    date: 'À venir',
+    duree: '6h / semaine',
+    mode: 'En ligne',
+    modules: [
+      'Découvrir le monitoring moderne avec Zabbix et Grafana',
+      'Installer et configurer une plateforme complète sous Ubuntu (Zabbix Server, MySQL, Agent, Grafana)',
+      'Surveiller vos serveurs, applications et équipements réseau via agents et SNMP',
+      'Automatiser les alertes et actions pour anticiper les incidents',
+      'Créer des tableaux de bord professionnels dans Grafana',
+      'Réaliser un projet final concret de monitoring complet'
+    ]
+  }
+};
+
+
+function showDetail(id) {
+  const d = DETAILS[id];
+  if(!d) return;
+  const modulesHtml = d.modules.map(m => `<li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:0.9rem;">${m}</li>`).join('');
+  document.getElementById('detail-content').innerHTML = `
+    <div style="max-width:800px;margin:0 auto;padding:2rem;">
+      <button onclick="showPage('home');" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:0.9rem;margin-bottom:24px;display:flex;align-items:center;gap:6px;">
+        ← Retour à l'accueil
+      </button>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;">
+        <div style="display:flex;align-items:center;gap:20px;margin-bottom:24px;flex-wrap:wrap;">
+          ${d.logo}
+          <div>
+            <h1 style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">${d.title}</h1>
+            <p style="color:var(--muted);margin-top:4px;">${d.subtitle}</p>
+          </div>
+        </div>
+        <p style="font-size:1rem;line-height:1.7;color:var(--text);margin-bottom:32px;">${d.desc}</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px;">
+          
+          <div style="background:#f1f5f9;border-radius:12px;padding:16px;text-align:center;">
+            <div style="font-size:1.5rem;">⏱️</div>
+            <div style="font-size:0.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;margin:4px 0;">Durée</div>
+            <div style="font-weight:700;font-size:0.95rem;">${d.duree}</div>
+          </div>
+          <div style="background:#f1f5f9;border-radius:12px;padding:16px;text-align:center;">
+            <div style="font-size:1.5rem;">🌐</div>
+            <div style="font-size:0.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;margin:4px 0;">Mode</div>
+            <div style="font-weight:700;font-size:0.95rem;">${d.mode}</div>
+          </div>
+        </div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;margin-bottom:16px;">Programme</h2>
+        <ul style="list-style:none;padding:0;margin-bottom:32px;">${modulesHtml}</ul>
+        <div style="text-align:center;">
+          <a href="https://wa.me/22781480676?text=Bonjour%2C%20je%20suis%20intéressé%20par%20la%20formation%20${encodeURIComponent(d.title)}" target="_blank" class="btn btn-primary btn-lg" style="text-decoration:none;display:inline-block;">
+            <i class="fab fa-whatsapp"></i> S'inscrire via WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-catalogue').classList.add('active');
+  document.getElementById('catalogue-content').style.display = 'none';
+  document.getElementById('detail-content').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+function thumbBg(cat){
+  return {cybersecurite:'rgba(6,182,212,0.08)',reseaux:'rgba(139,92,246,0.08)',hacking:'rgba(239,68,68,0.08)',soc:'rgba(245,158,11,0.08)',systeme:'#ffffff'}[cat]||'rgba(100,116,139,0.08)';
+}
+function levelLabel(l){ return l==='debutant'?'Débutant':l==='intermediaire'?'Intermédiaire':'Avancé'; }
+
+function renderCourses(containerId, filter, max){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  let list = COURSES;
+  if(filter && filter!=='tous') list = list.filter(c => c.cat===filter||c.level===filter||c.id===parseInt(filter));
+  if(max) list = list.slice(0, max);
+  el.innerHTML = list.map(c=>`
+    <div class="course-card" style="${c.upcoming ? 'opacity:0.75;' : ''}">
+      <div class="course-thumb" style="background:${thumbBg(c.cat)}">${c.emoji}
+        <span class="course-level level-${c.level}">${levelLabel(c.level)}</span>
+        ${c.upcoming ? '<span style="position:absolute;top:12px;left:12px;background:#f59e0b;color:#fff;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.05em;">🕐 À venir</span>' : ''}
+      </div>
+      <div class="course-body">
+        <h3>${c.title}</h3>
+        <p>${c.desc}</p>
+        <div class="course-meta"><span>⏱ ${c.duration}</span></div>
+        <div class="course-footer">
+          ${c.upcoming
+            ? '<span style="font-size:0.78rem;color:#f59e0b;font-weight:600;">Ouverture prochainement</span>'
+            : `<button class="enroll-btn" style="background:var(--accent);margin-right:8px;" onclick="showDetail(${c.id})">Voir détails</button><a href="https://wa.me/22781480676?text=Bonjour%2C%20je%20suis%20intéressé%20par%20la%20formation%20${encodeURIComponent(c.title)}" target="_blank" class="enroll-btn" style="text-decoration:none;">S'inscrire</a>`
+          }
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterCourses(f, btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCourses('all-courses', f);
+}
+
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.querySelectorAll('.mobile-menu a').forEach(a=>a.classList.remove('active'));
+  const pageMap = {home:'nav-accueil', catalogue:'nav-formations', pourquoi:'nav-pourquoi', contact:'nav-contact'};
+  const mobMap  = {home:'mob-accueil', catalogue:'mob-formations', pourquoi:'mob-pourquoi', contact:'mob-contact'};
+  if(pageMap[page]) document.getElementById(pageMap[page]).classList.add('active');
+  if(mobMap[page])  document.getElementById(mobMap[page]).classList.add('active');
+  window.scrollTo(0,0);
+  if(page==='home') renderCourses('featured-courses','tous',3);
+  if(page==='catalogue'){
+    const cc = document.getElementById('catalogue-content');
+    const dc = document.getElementById('detail-content');
+    if(cc) cc.style.display='block';
+    if(dc) dc.style.display='none';
+    renderCourses('all-courses','tous');
+  }
+}
+
+function scrollTo(id){ setTimeout(()=>{ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); },100); }
+
+function envoyerMessage(){
+  const nom = document.getElementById('contact-nom').value;
+  const email = document.getElementById('contact-email').value;
+  const msg = document.getElementById('contact-message').value;
+  if(!nom||!msg){ alert('Veuillez remplir le nom et le message.'); return; }
+  const text = encodeURIComponent('Bonjour, je suis ' + nom + ' (' + email + ').\n\n' + msg);
+  window.open('https://wa.me/22781480676?text=' + text, '_blank');
+}
+
+
+function animateCounter(id, target, suffix, duration) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  let start = 0;
+  const step = Math.ceil(target / (duration / 16));
+  const timer = setInterval(() => {
+    start += step;
+    if(start >= target) { start = target; clearInterval(timer); }
+    el.textContent = start + suffix;
+  }, 16);
+}
+
+function startCounters() {
+  animateCounter('stat-apprenants', 30, '', 1500);
+  animateCounter('stat-formations', 3, '', 800);
+  animateCounter('stat-satisfaction', 98, '%', 1500);
+}
+
+// Observer pour déclencher quand la section est visible
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      startCounters();
+      observer.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+
+const statsSection = document.querySelector('.hero-stats');
+if(statsSection) observer.observe(statsSection);
+
+
+function toggleMenu(){
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+
+function show(id){ document.getElementById(id).style.display='block'; }
+function hide(id){ document.getElementById(id).style.display='none'; }
+
+renderCourses('featured-courses','tous',3);
+</script>
+</div>
+
+<!-- POURQUOI NOUS -->
+<div id="page-pourquoi" class="page">
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Qui sommes-nous</div>
+        <div class="section-title">Pourquoi choisir TRAININGS4IT ?</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:48px;line-height:1.8;color:var(--text);">
+        <p style="margin-bottom:16px;">TRAININGS4IT est une startup de formation spécialisée dans les domaines des systèmes, des réseaux et de la cybersécurité. Nous accompagnons les entreprises, les professionnels de l'informatique, les équipes techniques et les étudiants dans le renforcement de leurs compétences, à travers des parcours certifiants, pratiques et à jour avec les dernières évolutions technologiques.</p>
+        <p style="margin-bottom:16px;"><strong>Notre mission :</strong> transmettre un savoir concret et opérationnel, dispensé par des formateurs experts du terrain.</p>
+        <p style="margin-bottom:16px;">Nos programmes s'adaptent aux enjeux actuels de l'IT, qu'il s'agisse de sécurisation des infrastructures, d'administration réseau avancée ou de gestion des systèmes sous Windows et Linux.</p>
+        <p style="font-weight:600;margin-bottom:8px;">Domaines d'expertise :</p>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:8px 0;border-bottom:1px solid var(--border);">🖥️ Virtualisation avec Proxmox VE – Administration de clusters, VMs et conteneurs LXC</li>
+          <li style="padding:8px 0;border-bottom:1px solid var(--border);">🔐 Sécurité Réseau avec FortiGate – Firewall, VPN, SD-WAN, IPS, FortiSASE (NSE 4)</li>
+          <li style="padding:8px 0;">📊 Supervision avec Zabbix & Grafana – Monitoring des serveurs critiques et équipements réseaux, alertes automatisées et tableaux de bord temps réel</li>
+        </ul>
+      </div>
+      <div class="features-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-user-graduate" style="color:#06b6d4;"></i></div><h3>Formateurs experts du terrain</h3><p>Certifiés Fortinet NSE4/NSE5, Proxmox et Zabbix, actifs en entreprise.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-laptop-code" style="color:#06b6d4;"></i></div><h3>100% pratique</h3><p>Chaque formation se fait sur des labs réels, pas de théorie sans mise en pratique.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-certificate" style="color:#06b6d4;"></i></div><h3>Certificats reconnus</h3><p>Attestations valorisées par les recruteurs et entreprises IT.</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- CONTACT -->
+<div id="page-contact" class="page">
+  <section>
+    <div class="container" style="max-width:700px;">
+      <div class="section-header">
+        <div class="section-label">Contactez-nous</div>
+        <div class="section-title">Nous sommes là pour vous accompagner</div>
+        <div class="section-sub">Vous avez une question sur nos formations ? N'hésitez pas à nous contacter.</div>
+      </div>
+
+      <!-- Coordonnées -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px;">
+        <a href="https://wa.me/22781480676" target="_blank" style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:16px;transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="width:48px;height:48px;border-radius:12px;background:#25D366;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;flex-shrink:0;"><i class="fab fa-whatsapp"></i></div>
+          <div><div style="font-weight:600;font-size:0.9rem;">WhatsApp</div><div style="color:var(--muted);font-size:0.8rem;">+227 81 48 06 76</div></div>
+        </a>
+        <a href="mailto:contacts@trainings4it.com" style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:16px;transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="width:48px;height:48px;border-radius:12px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;flex-shrink:0;"><i class="fas fa-envelope-open-text"></i></div>
+          <div><div style="font-weight:600;font-size:0.9rem;">Email</div><div style="color:var(--muted);font-size:0.8rem;">contacts@trainings4it.com</div></div>
+        </a>
+      </div>
+
+      <!-- Réseaux sociaux -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:32px;">
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin-bottom:20px;">Suivez-nous</h3>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="https://www.facebook.com/share/1BRUFV2TpV/" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 20px;border-radius:10px;background:#1877F2;color:#fff;text-decoration:none;font-size:0.875rem;font-weight:600;"><i class="fab fa-facebook-f"></i> Facebook</a>
+          <a href="https://youtube.com/@trainings4it" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 20px;border-radius:10px;background:#FF0000;color:#fff;text-decoration:none;font-size:0.875rem;font-weight:600;"><i class="fab fa-youtube"></i> YouTube</a>
+          <a href="https://www.linkedin.com/company/trainings4it/" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 20px;border-radius:10px;background:#0077B5;color:#fff;text-decoration:none;font-size:0.875rem;font-weight:600;"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+        </div>
+      </div>
+
+      <!-- Formulaire -->
+      <div style="background:linear-gradient(135deg,#0891b2,#06b6d4);border-radius:20px;padding:40px;margin-bottom:32px;text-align:center;">
+        <div style="background:#fff;border-radius:16px;padding:36px;max-width:420px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,0.15);">
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:6px;color:#1e293b;">Envoyez-nous un message</h3>
+          <p style="color:#64748b;font-size:0.85rem;margin-bottom:24px;">Nous vous répondons dans les plus brefs délais</p>
+          <input type="text" id="contact-nom" placeholder="Nom complet" style="width:100%;padding:14px 16px;border:1px solid #e2e8f0;border-radius:10px;font-size:0.9rem;font-family:'Inter',sans-serif;background:#f8fafc;outline:none;color:#1e293b;margin-bottom:14px;box-sizing:border-box;">
+          <input type="email" id="contact-email" placeholder="Adresse email" style="width:100%;padding:14px 16px;border:1px solid #e2e8f0;border-radius:10px;font-size:0.9rem;font-family:'Inter',sans-serif;background:#f8fafc;outline:none;color:#1e293b;margin-bottom:14px;box-sizing:border-box;">
+          <textarea id="contact-message" placeholder="Votre message..." style="width:100%;padding:14px 16px;border:1px solid #e2e8f0;border-radius:10px;font-size:0.9rem;font-family:'Inter',sans-serif;background:#f8fafc;outline:none;color:#1e293b;resize:vertical;min-height:100px;margin-bottom:20px;box-sizing:border-box;"></textarea>
+          <button onclick="envoyerMessage()" style="width:100%;padding:14px;background:#06b6d4;color:#fff;border:none;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s;" onmouseover="this.style.background='#0891b2'" onmouseout="this.style.background='#06b6d4'"><i class="fab fa-whatsapp" style="margin-right:8px;"></i>Envoyer via WhatsApp</button>
+        </div>
+      </div>
+
+      <!-- Horaires -->
+      <div style="background:var(--primary);border-radius:16px;padding:24px;text-align:center;color:#fff;">
+        <div style="font-size:1.8rem;margin-bottom:8px;color:#06b6d4;"><i class="fas fa-business-time"></i></div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;margin-bottom:4px;">Disponibilité</div>
+        <div style="color:#94a3b8;font-size:0.9rem;">Du Lundi au Dimanche de 8h à 1h (WAT)</div>
+      </div>
+
+    </div>
+  </section>
+</div>
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo"><div style="display:flex;flex-direction:column;line-height:1;"><div style="font-size:1.2rem;font-weight:900;letter-spacing:-0.5px;"><span style="color:#06b6d4;">TRAININGS</span><span style="color:#fff;">4IT</span></div><div style="font-size:0.42rem;color:#64748b;letter-spacing:0.15em;font-weight:600;">LEARNING NEVER ENDS</div></div></div>
+        <p>Startup de formation spécialisée en systèmes, réseaux et cybersécurité. Parcours certifiants et pratiques dispensés par des experts du terrain, pour les professionnels IT d'Afrique francophone et au-delà.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Formations</h4>
+        <a onclick="showPage('catalogue')">Proxmox VE – Virtualisation</a>
+        <a onclick="showPage('catalogue')">FortiOS Administrator – NSE 4</a>
+        <a onclick="showPage('catalogue')">Supervision Zabbix & Grafana</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div style="margin-bottom:12px;font-size:0.875rem;color:#94a3b8;">
+          <i class="fab fa-whatsapp" style="color:#25D366;margin-right:6px;"></i>+227 81 48 06 76
+        </div>
+        <div style="margin-bottom:16px;font-size:0.875rem;color:#94a3b8;">
+          <i class="fas fa-envelope-open-text" style="color:#06b6d4;margin-right:6px;"></i>contacts@trainings4it.com
+        </div>
+        <div style="display:flex;gap:12px;margin-top:8px;">
+          <a href="https://www.facebook.com/share/1BRUFV2TpV/" target="_blank" style="width:36px;height:36px;border-radius:8px;background:#1877F2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;text-decoration:none;"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://youtube.com/@trainings4it" target="_blank" style="width:36px;height:36px;border-radius:8px;background:#FF0000;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;text-decoration:none;"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.linkedin.com/company/trainings4it/" target="_blank" style="width:36px;height:36px;border-radius:8px;background:#0077B5;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;text-decoration:none;"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://wa.me/22781480676" target="_blank" style="width:36px;height:36px;border-radius:8px;background:#25D366;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;text-decoration:none;"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 trainings4IT. Tous droits réservés.</div>
+    </footer>
+</body>
+</html>
